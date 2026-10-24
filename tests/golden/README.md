@@ -39,11 +39,11 @@ Files are UTF-8, comma-separated, with a header row. Quote a field if it contain
 | `template` | `general` | One of `general`, `banks`, `finance`, `holding`, `insurance` (prefix of the table id) |
 | `consolidation` | `Konsolide` | `Finansal Tablo Niteliği` in the file header, copied as written |
 | `table_id` | `general_role_310003` | Table id, from `tbl_...` in the table's class |
-| `statement` | `income_statement` | One of `balance_sheet`, `income_statement`, `comprehensive_income`, `cash_flow`, `equity_changes` |
+| `statement` | `income_statement` | One of `balance_sheet`, `income_statement`, `oci`, `cash_flow`, `equity_changes`, as in `docs/glossary.md` |
 | `row_id` | `general_role_310003-row-42` | Row class in the raw HTML |
 | `row_label` | `Yatırım Faaliyetlerinden Giderler` | Turkish row title as written |
 | `column` | `col-order-class-5` | Value cell class in the raw HTML |
-| `period_label` | `Önceki Dönem 01.01.2025 - 30.06.2025` | Column header text as written |
+| `period_label` | `Önceki Dönem 01.01.2025 - 30.06.2025` | Column header text as written; see step 5 below for two-line headers |
 | `raw_value` | `-36464628` | The cell's `title` attribute. Empty if the cell has no `title` |
 | `scale_unit` | `TL` | `Sunum Para Birimi` in the file header: `TL`, `1.000 TL` or `1.000.000 TL` |
 | `value_tl` | `-36464628` | `raw_value` × scale (1, 1,000 or 1,000,000). Empty if `raw_value` is empty |
@@ -72,7 +72,9 @@ The `.xls` files from KAP are HTML pages.
 2. Find the row by its Turkish title (`Ctrl+F`).
 3. Right-click the value and choose **Inspect**. The surrounding `<tr class="...">` gives `row_id`. The cell's `<td class="taxonomy-context-value col-order-class-N">` gives `column`. The `title="..."` attribute is `raw_value`.
 4. Read `column` and `title` **inside that one cell only.** Do not take a `title` from the next cell.
-5. Match the column to its header. Value cells start at `col-order-class-4` and follow the headers from left to right. Bank tables have two header rows, a period over `TP` / `YP` / `Toplam`; write both, for example `Cari Dönem 30.06.2026 · TP`.
+5. Match the column to its header. Value cells start at `col-order-class-4` and follow the headers from left to right. Write `period_label` like this:
+   - A header shown on two lines, such as `Önceki Dönem` over `01.01.2025 - 30.06.2025`, is one cell. Join the lines with a single space: `Önceki Dönem 01.01.2025 - 30.06.2025`.
+   - Bank tables have a second header row (`TP` / `YP` / `Toplam`) under each period. Add it after ` · `: `Cari Dönem 30.06.2026 · TP`.
 6. Read `Sunum Para Birimi` at the top of the page for `scale_unit`.
 
 ## Checking a file
