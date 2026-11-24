@@ -10,9 +10,12 @@
   },
   "dependencies": {
     "@vigil/api-types": "workspace:*",
+    "hono": "4.13.10",
     "next": "16.4.1",
     "react": "19.3.1",
-    "react-dom": "19.3.1"
+    "react-dom": "19.3.1",
+    "react-is": "19.3.1",
+    "recharts": "3.11.1"
   },
   "devDependencies": {
     "@types/node": "26.6.6",

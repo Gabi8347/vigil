@@ -3,7 +3,9 @@
  */
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { mockApiEnabled } from "../lib/mock-mode.ts";
 import { Disclaimer } from "./Disclaimer.tsx";
+import { Badge } from "./primitives.tsx";
 
 /** Top-level sections, in menu order. Paths are Turkish, like the rest of the UI. */
 export const NAV = [
@@ -32,6 +34,7 @@ export function Shell({ children }: { children: ReactNode }) {
             ))}
           </ul>
         </nav>
+        {mockApiEnabled && <Badge>Örnek veri</Badge>}
       </header>
       {/* biome-ignore lint/correctness/useUniqueElementIds: the skip link needs a fixed target; Shell renders once per page */}
       <main id="icerik">{children}</main>

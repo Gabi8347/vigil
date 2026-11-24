@@ -36,6 +36,10 @@ bun install
 bun test
 ```
 
+Run `bun run web` from the repository root or `bun run dev` from `apps/web` to preview the web app at
+`http://127.0.0.1:3000` with example data. To use the local Vigil API during development, set
+`NEXT_PUBLIC_VIGIL_MOCK_API=0` in `apps/web/.env.local` and restart Next.js.
+
 KAP files are **not** part of this repository. Download a quarter locally into `data/raw/{year}_{quarter}/` (retries, recovers what it can from a cut-off download and lists lost files; exits 1 if the quarter is incomplete). The files are also stored in the Zova archive `data/vigil.zova`, and `bun run process` then loads them into `data/vigil.duckdb`:
 
 ```bash

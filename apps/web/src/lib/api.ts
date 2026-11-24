@@ -32,6 +32,7 @@ import {
   type Value,
   type VersionSelector,
 } from "@vigil/api-types";
+import { mockApiEnabled, mockApiPath } from "./mock-mode.ts";
 
 /** The server listens on 127.0.0.1 only (decision 0008). */
 export const DEFAULT_API_URL = "http://127.0.0.1:8787";
@@ -152,11 +153,21 @@ export function pickApiUrl(p: { onServer: boolean; serverUrl?: string; publicUrl
 
 /** The client the app uses. The env names are written out so Next.js can put `NEXT_PUBLIC_API_URL` in the bundle. */
 export const api: ApiClient = createClient({
-  baseUrl: pickApiUrl({
-    onServer: typeof window === "undefined",
-    serverUrl: process.env.VIGIL_API_URL,
-    publicUrl: process.env.NEXT_PUBLIC_API_URL,
-  }),
+  baseUrl: mockApiEnabled
+    ? mockApiPath
+    : pickApiUrl({
+        onServer: typeof window === "undefined",
+        serverUrl: process.env.VIGIL_API_URL,
+        publicUrl: process.env.NEXT_PUBLIC_API_URL,
+      }),
+  // The browser uses the Next route handler. Server components call the same mock without an HTTP round trip.
+  fetch:
+    mockApiEnabled && typeof window === "undefined"
+      ? async (input, init) => {
+          const { handleMockRequest } = await import("./mock-api.ts");
+          return handleMockRequest(new Request(new URL(input, "http://127.0.0.1"), init));
+        }
+      : undefined,
 });
 
 /** The one place an amount string becomes a bigint. `null` unless the value is `ok`. */
