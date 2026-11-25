@@ -120,7 +120,11 @@ Lists use `limit` (default 50, maximum 200) and an opaque `cursor`:
 { "items": [], "next_cursor": "eyJpZCI6...", "total": 42 }
 ```
 
-`sort` takes a field name, `-` for descending: `sort=-size`.
+`sort` takes a field name, `-` for descending: `sort=-size`. Each list names its sort fields and its default sort; rows with equal values keep a fixed order, so pages do not overlap.
+
+To get the next page, pass `next_cursor` back as `cursor` with the same filters and `sort`. `next_cursor` is `null` on the last page. A `limit` outside 1–200, a `sort` field the list does not have, or a cursor the server did not make is `invalid_request` (400) naming the parameter.
+
+Every list endpoint uses the same helper, `apps/server/src/api/paging.ts` (#215).
 
 ### Errors
 
