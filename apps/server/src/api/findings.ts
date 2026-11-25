@@ -4,7 +4,7 @@
  *
  * Filters, each optional and combined with AND: `rule` (`gross_margin_change`, `profit_cash_divergence`,
  * `restated_comparatives`), `template` (the report's template family), `quarter` (`2026-2`) and `company` (any code of
- * the ticker group). `sort` is `size` (the rank score, which puts the three rules' sizes on one scale) or `date` (the
+ * the ticker group). `sort` is `size` (the rank score, comparable within a rule only: docs/SCHEMA.md) or `date` (the
  * report's publication time); the default is `-size`, the largest first. Paging uses the shared helper (#215).
  */
 import type { Finding, RuleId, Template } from "@vigil/api-types";
