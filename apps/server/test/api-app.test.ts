@@ -81,15 +81,17 @@ describe("serve", () => {
       .flat()
       .filter((a) => a && a.family === "IPv4" && !a.internal)
       .map((a) => a?.address as string);
-    for (const address of others) {
-      const result = await fetch(`http://${address}:${server.port}/v1/ping`, {
-        signal: AbortSignal.timeout(2000),
-      }).then(
-        () => "answered",
-        () => "refused",
-      );
-      expect(`${address}: ${result}`).toBe(`${address}: refused`);
-    }
+    // In parallel: on some machines a request to another address hangs until its timeout instead of being refused,
+    // so one at a time would grow with the number of addresses past the test timeout (#369).
+    const results = await Promise.all(
+      others.map((address) =>
+        fetch(`http://${address}:${server.port}/v1/ping`, { signal: AbortSignal.timeout(2000) }).then(
+          () => `${address}: answered`,
+          () => `${address}: refused`,
+        ),
+      ),
+    );
+    expect(results).toEqual(others.map((address) => `${address}: refused`));
   });
 });
 
