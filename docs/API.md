@@ -117,7 +117,7 @@ Order of versions follows `docs/SCHEMA.md` (report period, then publication time
 Lists use `limit` (default 50, maximum 200) and an opaque `cursor`:
 
 ```json
-{ "items": [], "next_cursor": "eyJpZCI6...", "total": 42 }
+{ "items": [], "next_cursor": "eyJvZmZzZXQiOjUwfQ", "total": 42 }
 ```
 
 `sort` takes a field name, `-` for descending: `sort=-size`. Each list names its sort fields and its default sort; rows with equal values keep a fixed order, so pages do not overlap.
@@ -181,6 +181,8 @@ Every error has the same shape and an HTTP status:
 ```
 
 `codes` comes from the ticker group in the file name (`A1CAP-ACP_1645514_2026_2.xls`); `code` is the first one. `title`, `sector` and `member_id` come from the company list (#163) and are `null` until it is loaded.
+
+`GET /v1/companies` lists every company with a loaded report; `latest_report` is its latest by report period, then publication time, then document id. `q` matches the codes and the title, folded the Turkish way and without spaces, so `işbank`, `ISBANK` and `İş Bank` find `TÜRKİYE İŞ BANKASI A.Ş.`; before the company list is loaded only the code matches. `sort` is `code` (default) or `title`.
 
 `/v1/companies/{code}` adds `reports`: every report with `document_id`, `year`, `quarter`, `consolidation`, `published_at`, `quality`, and `corrects` (the document it corrects, or `null`).
 
