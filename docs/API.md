@@ -259,6 +259,8 @@ Every error has the same shape and an HTTP status:
 
 `rule` values: `gross_margin_change` (S1), `profit_cash_divergence` (S2), `restated_comparatives` (S3). `size` is what lists sort by. `headline` states the change; it never says what to do.
 
+`GET /v1/findings` lists the findings under the configuration in force (`config_version`). Filters, each optional and combined: `rule`, `template` (the report's template family), `quarter` (`2026-2`) and `company` (any code of the ticker group). `sort` is `size` or `date` (the report's publication time); the default `-size` puts the largest first. `size` sorts by the rank score, which puts the three rules on one scale (S1 basis points, S2 TL, S3 a count).
+
 ### Finding (detail)
 
 The list item plus `calculation` (as in [Calculation](#calculation)), `thresholds` (the values in force, from `config_version`), and `methodology_url`.
